@@ -104,7 +104,7 @@ body{font-family:var(--font);color:var(--white);
 .overlay{position:fixed;inset:0;z-index:50;background:rgba(2,8,18,.72);backdrop-filter:blur(3px);
   display:none;align-items:center;justify-content:center;padding:20px}
 .overlay.open{display:flex}
-.modal{width:min(920px,94vw);max-height:88vh;overflow:auto;
+.modal{width:min(920px,94vw);max-height:88vh;overflow:scroll;
   background:linear-gradient(160deg,#0a2148,#071a38 60%,#061631);
   border:1px solid var(--line);border-radius:12px;padding:24px 26px;box-shadow:0 20px 60px rgba(0,0,0,.6);position:relative}
 .modal::-webkit-scrollbar{width:8px}
@@ -128,6 +128,7 @@ body{font-family:var(--font);color:var(--white);
 .metric .n{font-size:26px;font-weight:800;color:var(--gold-2);font-variant-numeric:tabular-nums}
 .metric .l{font-size:12px;color:var(--dim);margin-top:4px}
 .chart-box{height:260px;margin-top:8px;background:var(--panel-2);border:1px solid var(--line-soft);border-radius:8px;padding:6px}
+#map{height:420px;margin:8px 0 14px;background:var(--panel-2);border:1px solid var(--line-soft);border-radius:8px}
 .tag-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
 .tag{font-size:12px;color:var(--cyan-2);border:1px solid var(--line-soft);padding:4px 12px;border-radius:20px;background:rgba(57,200,255,.06)}
 .item-list{margin-top:6px}
@@ -162,6 +163,12 @@ body{font-family:var(--font);color:var(--white);
   .footer .org{gap:12px}
   .footer .org .div{display:none}
   .footer .org span{font-size:12px}
+}
+.shicheng-qrcode{
+  margin-top: 15px;
+}
+iframe{
+  margin-bottom: 15px;
 }
 </style>
 </head>
@@ -199,7 +206,8 @@ body{font-family:var(--font);color:var(--white);
 
   <section class="center">
     <div class="globe-cap"><div class="t">苍溪县 · 养老资源全景</div><div class="s">县-乡镇-村（社区）三级联动 · 一屏统览</div></div>
-    <div id="globe-wrap"><canvas id="globe"></canvas></div>
+    <!-- <div id="globe-wrap"><canvas id="globe"></canvas></div> -->
+    <iframe src="https://online.geovisearth.com/browser" id="globe-wrap" width="100%" height="100%" frameborder="0" allowfullscreen="true"></iframe>
     <div id="loc-tip"></div>
     <div class="globe-foot">
       <div class="gstat"><div class="n" data-num="72">0</div><div class="l">养老机构</div></div>
@@ -296,14 +304,14 @@ yanglaocg:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-lineca
 var DATA={
 mingsheng:{name:'民生项目',sub:'养老领域民生实事工程台账',html:function(){return '<div class="desc-banner">集中展示苍溪县当年实施的养老服务民生实事项目，涵盖建设进度、资金投入、责任单位与完成情况，实现项目全周期动态管理。</div><h3>年度重点项目（示例）</h3><div class="item-list">'+row('乡镇区域养老服务中心建设','新建 12 个中心，覆盖重点乡镇','在建')+row('幸福院适老化改造','完成 860 户困难家庭适老化改造','已完成')+row('社区助餐点建设','新增社区老年食堂助餐点 18 个','推进中')+row('智慧养老平台二期','平台功能升级与数据对接','立项')+'</div><h3>关键指标</h3><div class="metric-grid">'+metric('128','项目总数（个）')+metric('86.4%','平均完成率')+metric('2.6亿','年度投入（元）')+'</div>';}},
 yanglao:{name:'养老机构',sub:'全县养老机构分布与运营情况',html:function(){return '<div class="desc-banner">归集全县公办与民办养老机构、敬老院、幸福院及社区日间照料中心信息，支持按区域、类型筛选查看床位与入住情况。</div><h3>机构类型分布（示例）</h3><div class="metric-grid">'+metric('38','公办养老机构')+metric('21','民办养老机构')+metric('13','社区日间照料中心')+'</div><h3>重点机构（示例）</h3><div class="item-list">'+row('苍溪县社会福利中心','公办 · 床位 320 张 · 入住率 88%','示范')+row('陵江镇敬老院','公办 · 床位 120 张','良好')+row('云峰镇幸福院','民办 · 床位 86 张','良好')+'</div>';}},
-renkou:{name:'人口地图',sub:'老年人口空间分布可视化',html:function(){return '<div class="desc-banner">基于地理信息将全县老年人口按乡镇、村（社区）进行空间化展示，直观呈现人口密度、年龄结构与分布趋势。</div><h3>老年人口分布（示例）</h3><div class="metric-grid">'+metric('12.6万','60 岁以上人口')+metric('4.3万','80 岁以上人口')+metric('31','覆盖乡镇（个）')+'</div><h3>分布特点</h3><ul><li>老年人口向县城及中心场镇聚集，农村呈分散分布。</li><li>山区乡镇高龄化比例偏高，留守老人占比明显。</li></ul>';}},
+renkou:{name:'人口地图',sub:'老年人口空间分布可视化',html:function(){return '<div id="map"></div><div class="desc-banner">基于地理信息将全县老年人口按乡镇、村（社区）进行空间化展示，直观呈现人口密度、年龄结构与分布趋势。</div><h3>老年人口分布（示例）</h3><div class="metric-grid">'+metric('12.6万','60 岁以上人口')+metric('4.3万','80 岁以上人口')+metric('31','覆盖乡镇（个）')+'</div><h3>分布特点</h3><ul><li>老年人口向县城及中心场镇聚集，农村呈分散分布。</li><li>山区乡镇高龄化比例偏高，留守老人占比明显。</li></ul>';}},
 gongxu:{name:'供需对接',sub:'养老服务供需智能撮合',html:function(){return '<div class="desc-banner">汇聚养老服务的需求侧（老人与家庭）与供给侧（机构、人员、服务商），通过智能匹配实现供需高效对接。</div><h3>服务类别（示例）</h3><div class="tag-row"><span class="tag">生活照料</span><span class="tag">医疗护理</span><span class="tag">康复保健</span><span class="tag">助餐助浴</span><span class="tag">心理关怀</span><span class="tag">紧急救援</span><span class="tag">适老改造</span></div><h3>对接成效（示例）</h3><div class="metric-grid">'+metric('326','服务商入驻')+metric('1840','需求工单')+metric('92%','匹配成功率')+'</div>';}},
-shicheng:{name:'适老商城',sub:'适老化产品与服务商城',html:function(){return '<div class="desc-banner">面向老年人及其家庭提供适老化产品与服务的在线商城，涵盖辅具、改造、健康用品与上门服务等。</div><h3>热销品类（示例）</h3><div class="tag-row"><span class="tag">智能手环</span><span class="tag">护理床垫</span><span class="tag">助行辅具</span><span class="tag">防滑改造</span><span class="tag">智能呼叫</span><span class="tag">健康监测</span></div><h3>运营数据（示例）</h3><div class="metric-grid">'+metric('1560','上架商品')+metric('23800','累计订单')+metric('98.6%','好评率')+'</div>';}},
+shicheng:{name:'适老商城',sub:'适老化产品与服务商城',html:function(){return '<div class="desc-banner">面向老年人及其家庭提供适老化产品与服务的在线商城，涵盖辅具、改造、健康用品与上门服务等。</div><h3>热销品类（示例）</h3><div class="tag-row"><span class="tag">智能手环</span><span class="tag">护理床垫</span><span class="tag">助行辅具</span><span class="tag">防滑改造</span><span class="tag">智能呼叫</span><span class="tag">健康监测</span></div><img src="assets/shicheng-qrcode.png" alt="适老商城二维码" class="shicheng-qrcode"><h3>运营数据（示例）</h3><div class="metric-grid">'+metric('1560','上架商品')+metric('23800','累计订单')+metric('98.6%','好评率')+'</div>';}},
 shegong:{name:'社会工作者',sub:'社工人才队伍与网格服务',html:function(){return '<div class="desc-banner">展示全县社会工作专业人才队伍、持证情况、网格分布与服务开展成效，推动专业化养老服务队伍建设。</div><h3>人才结构（示例）</h3><div class="metric-grid">'+metric('856','社工人员')+metric('312','持证社工')+metric('48','志愿服务队')+'</div><h3>服务网络</h3><ul><li>构建“县—乡镇—村（社区）”三级社工服务网络。</li><li>定期开展走访、评估、帮扶与政策宣传等专业服务。</li></ul>';}},
 chaxun:{name:'数据查询',sub:'业务数据一站式检索',html:function(){return '<div class="desc-banner">提供养老机构、服务对象、补贴发放、项目建设等多类业务数据的一站式检索入口，支持多条件组合查询。</div><h3>查询维度（示例）</h3><div class="tag-row"><span class="tag">机构信息</span><span class="tag">补贴发放</span><span class="tag">服务对象</span><span class="tag">项目进度</span><span class="tag">社工档案</span><span class="tag">党建记录</span></div><h3>检索示例</h3><div class="item-list">'+row('特困供养对象','低保特困老年人补贴台账','支持导出')+row('高龄津贴发放','80 周岁以上老人津贴记录','支持导出')+'</div>';}},
 tongji:{name:'统计图表',sub:'多维数据可视化分析',html:function(){return '<div class="desc-banner">对养老服务关键业务数据进行多维度统计分析，以图表形式直观呈现变化趋势与结构分布。</div><div class="chart-box" id="chart-bar"></div><h3>机构类型占比</h3><div class="chart-box" id="chart-pie"></div>';}},
 xiangmu:{name:'项目数据',sub:'项目全生命周期跟踪',html:function(){return '<div class="desc-banner">对养老服务领域工程项目与信息化项目进行立项、建设、验收、运营的全生命周期跟踪管理。</div><h3>项目阶段（示例）</h3><div class="metric-grid">'+metric('18','在建项目')+metric('9','竣工项目')+metric('5','运营项目')+'</div><h3>在建项目（示例）</h3><div class="item-list">'+row('县养老服务中心改扩建','建设进度 62% · 投资 5800 万','在建')+row('乡镇助餐点网络','进度 45% · 覆盖 12 乡镇','在建')+row('智慧养老监管平台','进度 30% · 信息化建设','在建')+'</div>';}},
-dangjian:{name:'党建成果',sub:'党建引领养老服务成果',html:function(){return '<div class="desc-banner">展示以党建引领养老服务体系建设的组织覆盖、活动开展与惠民成效，突出党组织战斗堡垒作用。</div><h3>组织建设（示例）</h3><div class="metric-grid">'+metric('100%','党组织覆盖率')+metric('256','党员服务先锋岗')+metric('64','党建服务点')+'</div><h3>特色做法（示例）</h3><ul><li>成立养老服务行业党委，实现机构党组织应建尽建。</li><li>开展“党建+助老”结对帮扶，党员定期走访困难老人。</li><li>推动社区党群服务中心与养老服务站点共建共享。</li></ul>';}},
+dangjian:{name:'党建成果',sub:'党建引领养老服务成果',html:function(){return '<iframe src="http://swjtu.cd168.cn//vr/?sid=hh6" width="100%" height="500px" frameborder="0" allowfullscreen="true"></iframe><div class="desc-banner">展示以党建引领养老服务体系建设的组织覆盖、活动开展与惠民成效，突出党组织战斗堡垒作用。</div><h3>组织建设（示例）</h3><div class="metric-grid">'+metric('100%','党组织覆盖率')+metric('256','党员服务先锋岗')+metric('64','党建服务点')+'</div><h3>特色做法（示例）</h3><ul><li>成立养老服务行业党委，实现机构党组织应建尽建。</li><li>开展“党建+助老”结对帮扶，党员定期走访困难老人。</li><li>推动社区党群服务中心与养老服务站点共建共享。</li></ul>';}},
 yanglaocg:{name:'养老成果',sub:'养老服务体系建设成效',html:function(){return '<div class="desc-banner">系统展示苍溪县在养老服务体系建设、服务水平提升方面的整体成效与示范亮点。</div><h3>体系成效（示例）</h3><div class="metric-grid">'+metric('县-乡-村','三级服务网络')+metric('100%','镇街覆盖率')+metric('91%','老人满意度')+'</div><h3>示范亮点（示例）</h3><div class="item-list">'+row('省级养老服务示范县','获评养老服务体系创新试点','示范')+row('智慧养老试点','平台接入机构与床位全量数据','领先')+row('医养结合','实现乡镇卫生院与养老机构签约协作','特色')+'</div>';}}};
 function row(t,d,s){return '<div class="item"><span class="dot"></span><div class="tx"><b>'+t+'</b><br><span>'+d+'</span></div><span class="st">'+s+'</span></div>';}
 function metric(n,l){return '<div class="metric"><div class="n">'+n+'</div><div class="l">'+l+'</div></div>';}
@@ -315,6 +323,38 @@ mClose.addEventListener('click',closePanel);
 overlay.addEventListener('click',function(e){if(e.target===overlay)closePanel();});
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closePanel();});
 window.addEventListener('load',function(){document.querySelectorAll('.gstat .n').forEach(animateNum);});
+</script>
+<script src="https://img.hcharts.cn/highmaps/highmaps.js"></script>
+<script src="https://data.jianshukeji.com/geochina/hunan.js"></script>
+<script>
+// 随机数据
+var data = [{"name":"长沙","value":42},{"name":"株洲","value":81},{"name":"湘潭","value":94},{"name":"衡阳","value":8},{"name":"邵阳","value":67},{"name":"岳阳","value":38},{"name":"常德","value":7},{"name":"张家界","value":9},{"name":"益阳","value":77},{"name":"郴州","value":78},{"name":"永州","value":17},{"name":"怀化","value":83},{"name":"娄底","value":23},{"name":"湘西","value":75}];
+// 初始化图表
+var map = new Highcharts.Map('map', {
+  title: {
+    text: '湖南省'
+  },
+  colorAxis: {
+    min: 0,
+    minColor: 'rgb(255,255,255)',
+    maxColor: '#006cee'
+  },
+  series: [{
+    data: data,
+    name: '随机数据',
+    mapData: Highcharts.maps['cn/hunan'],
+    joinBy: 'name', // 根据 name 属性进行关联
+    states: {
+			hover: {
+				color: '#000'
+			}
+		},
+    dataLabels: {
+			enabled: true,
+			format: '{point.name}'
+		}
+  }]
+});
 </script>
 </body>
 </html>
