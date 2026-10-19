@@ -1,0 +1,123 @@
+{
+  "src": "C:\\Users\\admin\\Doubao\\chats\\2026-10-17\\new-chat\\养老服务信息平台\\综合养老服务信息平台.html",
+  "url": "file:///C:/Users/admin/Doubao/chats/2026-10-17/new-chat/%E5%85%BB%E8%80%81%E6%9C%8D%E5%8A%A1%E4%BF%A1%E6%81%AF%E5%B9%B3%E5%8F%B0/%E7%BB%BC%E5%90%88%E5%85%BB%E8%80%81%E6%9C%8D%E5%8A%A1%E4%BF%A1%E6%81%AF%E5%B9%B3%E5%8F%B0.html",
+  "outdir": "C:\\Users\\admin\\Doubao\\chats\\2026-10-17\\new-chat\\养老服务信息平台\\_shots",
+  "include": [
+    "lint",
+    "screenshots",
+    "structure"
+  ],
+  "shots": {
+    "desktop": {
+      "screenshot": "C:\\Users\\admin\\Doubao\\chats\\2026-10-17\\new-chat\\养老服务信息平台\\_shots\\综合养老服务信息平台_desktop.png",
+      "screenshotBytes": 942976,
+      "truncated": false,
+      "structure": {
+        "title": "综合养老服务信息平台",
+        "firstH1": "综合养老服务信息平台智慧苍溪",
+        "viewport": {
+          "w": 1424,
+          "h": 749
+        },
+        "fullpage": {
+          "w": 1424,
+          "h": 761
+        },
+        "counts": {
+          "section": 1,
+          "h1": 1,
+          "h2": 1,
+          "img": 0,
+          "canvas": 1,
+          "svg": 12,
+          "links": 0,
+          "buttons": 1
+        }
+      },
+      "consoleErrors": [],
+      "consoleWarnings": [],
+      "horizontalOverflow": [],
+      "resourceErrors": [],
+      "reportSource": "cdp"
+    }
+  },
+  "engine": "chrome_cli",
+  "chromiumExec": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+  "engineDegraded": true,
+  "engineDegradedReason": "playwright 未装",
+  "publishBrokenAssets": [
+    {
+      "file": "assets\\earth.jpg",
+      "reason": "unreferenced-file",
+      "severity": "warning",
+      "loadedAtRuntime": false,
+      "onDisk": true
+    }
+  ],
+  "publishBrokenAssetsHint": "含义：发布链路靠静态扫描 HTML 源码决定上传哪些图片文件，**只认 `src` 属性和 CSS `url()` 两个位置**（线上实测）。写在别处的路径不会被上传，发布后 404 裂图。本地打开和自检截图都看不出来——文件真实存在，浏览器照样加载。 | severity=error 的逐条改，改法都是同一个：把路径挪到 `<img src=\"assets/x.png\">` 或 CSS `url('assets/x.png')`。reason=js-literal 路径写在 JS 字符串里（`const g=['assets/x.png']` 这种常量数组也算，照样裂）；reason=js-concat 路径由 JS 拼接（`'assets/img'+i+'.png'`）；reason=non-src-attr 路径写在 `data-src`、`srcset`、`poster` 等非 `src` 属性上——**这类即便静态写在 HTML 属性里也会裂**，懒加载写法要在 `src` 上放真实路径。 | severity=warning（reason=unreferenced-file）是提醒不是错误：`assets/` 里有这个文件，但源码和运行时都没引用到它。可能是没用上的多余素材（删掉即可），也可能是路径拼接且当前视口没渲染到的图（那就是会裂的，按 error 处理）。**这一条只在本地电脑（macOS / Windows）检测**——云电脑图片走 `lark-cli drive +html-image-upload`，HTML 引用外链、`assets/` 里的原图本就该保留且不被引用，在那儿报是纯误报，所以直接不报；**别因为这条去删云电脑上的原图**。自行判断，别的规则不受它影响。",
+  "elapsedSec": 8.37,
+  "schemaVersion": 2,
+  "status": "fail",
+  "engineInfo": {
+    "name": "chrome_cli",
+    "degraded": true,
+    "degradedReasons": [
+      "playwright 未装"
+    ]
+  },
+  "input": {
+    "original": "C:\\Users\\admin\\Doubao\\chats\\2026-10-17\\new-chat\\养老服务信息平台\\综合养老服务信息平台.html",
+    "resolvedPath": "C:\\Users\\admin\\Doubao\\chats\\2026-10-17\\new-chat\\养老服务信息平台\\综合养老服务信息平台.html",
+    "baseUrl": "file:///C:/Users/admin/Doubao/chats/2026-10-17/new-chat/%E5%85%BB%E8%80%81%E6%9C%8D%E5%8A%A1%E4%BF%A1%E6%81%AF%E5%B9%B3%E5%8F%B0/%E7%BB%BC%E5%90%88%E5%85%BB%E8%80%81%E6%9C%8D%E5%8A%A1%E4%BF%A1%E6%81%AF%E5%B9%B3%E5%8F%B0.html",
+    "protocol": "file",
+    "cwd": "C:\\Users\\admin\\Doubao\\chats\\2026-10-17\\new-chat",
+    "mediaMode": {
+      "reducedMotion": false
+    }
+  },
+  "artifacts": {
+    "screenshots": [
+      {
+        "viewport": "desktop",
+        "path": "C:\\Users\\admin\\Doubao\\chats\\2026-10-17\\new-chat\\养老服务信息平台\\_shots\\综合养老服务信息平台_desktop.png",
+        "size": 942976,
+        "visualCoverage": {
+          "complete": true,
+          "reason": null
+        }
+      }
+    ]
+  },
+  "summary": {
+    "blocker": 0,
+    "error": 1,
+    "warning": 0,
+    "info": 0
+  },
+  "findings": [
+    {
+      "ruleId": "publishBrokenAssets",
+      "severity": "error",
+      "kind": "publish",
+      "viewport": null,
+      "selector": null,
+      "evidence": {
+        "file": "assets\\earth.jpg",
+        "reason": "unreferenced-file",
+        "severity": "warning",
+        "loadedAtRuntime": false,
+        "onDisk": true
+      },
+      "dedupeKey": "publishBrokenAssets|top||0"
+    }
+  ],
+  "prioritizedActions": [
+    {
+      "ruleId": "publishBrokenAssets",
+      "severity": "error",
+      "viewport": null,
+      "selector": null
+    }
+  ],
+  "reportPath": "C:\\Users\\admin\\Doubao\\chats\\2026-10-17\\new-chat\\养老服务信息平台\\_shots\\report.json"
+}
