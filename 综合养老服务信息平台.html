@@ -242,6 +242,8 @@ body{font-family:var(--font);color:var(--white);
 <script src="assets/three.min.js"></script>
 <script src="assets/OrbitControls.js"></script>
 <script src="assets/echarts.min.js"></script>
+<script src="assets/GuangYuan.js"></script>
+
 <script>
 (function(){var n=new Date();var w=['日','一','二','三','四','五','六'][n.getDay()];var el=document.getElementById('today');if(el)el.textContent=n.getFullYear()+'年'+(n.getMonth()+1)+'月'+n.getDate()+'日 · 星期'+w;})();
 function animateNum(el){var t=parseInt(el.getAttribute('data-num'),10);if(!t)return;var s=null,d=1400;function st(ts){if(s===null)s=ts;var p=Math.min((ts-s)/d,1);var e=1-Math.pow(1-p,3);el.textContent=Math.round(t*e).toLocaleString();if(p<1)requestAnimationFrame(st);}requestAnimationFrame(st);}
@@ -296,7 +298,7 @@ yanglaocg:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-lineca
 var DATA={
 mingsheng:{name:'民生项目',sub:'养老领域民生实事工程台账',html:function(){return '<div class="desc-banner">集中展示苍溪县当年实施的养老服务民生实事项目，涵盖建设进度、资金投入、责任单位与完成情况，实现项目全周期动态管理。</div><h3>年度重点项目（示例）</h3><div class="item-list">'+row('乡镇区域养老服务中心建设','新建 12 个中心，覆盖重点乡镇','在建')+row('幸福院适老化改造','完成 860 户困难家庭适老化改造','已完成')+row('社区助餐点建设','新增社区老年食堂助餐点 18 个','推进中')+row('智慧养老平台二期','平台功能升级与数据对接','立项')+'</div><h3>关键指标</h3><div class="metric-grid">'+metric('128','项目总数（个）')+metric('86.4%','平均完成率')+metric('2.6亿','年度投入（元）')+'</div>';}},
 yanglao:{name:'养老机构',sub:'全县养老机构分布与运营情况',html:function(){return '<div class="desc-banner">归集全县公办与民办养老机构、敬老院、幸福院及社区日间照料中心信息，支持按区域、类型筛选查看床位与入住情况。</div><h3>机构类型分布（示例）</h3><div class="metric-grid">'+metric('38','公办养老机构')+metric('21','民办养老机构')+metric('13','社区日间照料中心')+'</div><h3>重点机构（示例）</h3><div class="item-list">'+row('苍溪县社会福利中心','公办 · 床位 320 张 · 入住率 88%','示范')+row('陵江镇敬老院','公办 · 床位 120 张','良好')+row('云峰镇幸福院','民办 · 床位 86 张','良好')+'</div>';}},
-renkou:{name:'人口地图',sub:'老年人口空间分布可视化',html:function(){return '<div class="desc-banner">基于地理信息将全县老年人口按乡镇、村（社区）进行空间化展示，直观呈现人口密度、年龄结构与分布趋势。</div><h3>老年人口分布（示例）</h3><div class="metric-grid">'+metric('12.6万','60 岁以上人口')+metric('4.3万','80 岁以上人口')+metric('31','覆盖乡镇（个）')+'</div><h3>分布特点</h3><ul><li>老年人口向县城及中心场镇聚集，农村呈分散分布。</li><li>山区乡镇高龄化比例偏高，留守老人占比明显。</li></ul>';}},
+renkou:{name:'人口地图',sub:'老年人口空间分布可视化',html:function(){return '<div class="desc-banner">基于地理信息将全县老年人口按乡镇、村（社区）进行空间化展示，直观呈现人口密度、年龄结构与分布趋势。</div><h3>老年人口分布（示例）</h3><div id="renkou-map" style="width:100%;height: 400px"></div><div class="metric-grid">'+metric('12.6万','60 岁以上人口')+metric('4.3万','80 岁以上人口')+metric('31','覆盖乡镇（个）')+'</div><h3>分布特点</h3><ul><li>老年人口向县城及中心场镇聚集，农村呈分散分布。</li><li>山区乡镇高龄化比例偏高，留守老人占比明显。</li></ul>';}},
 gongxu:{name:'供需对接',sub:'养老服务供需智能撮合',html:function(){return '<div class="desc-banner">汇聚养老服务的需求侧（老人与家庭）与供给侧（机构、人员、服务商），通过智能匹配实现供需高效对接。</div><h3>服务类别（示例）</h3><div class="tag-row"><span class="tag">生活照料</span><span class="tag">医疗护理</span><span class="tag">康复保健</span><span class="tag">助餐助浴</span><span class="tag">心理关怀</span><span class="tag">紧急救援</span><span class="tag">适老改造</span></div><h3>对接成效（示例）</h3><div class="metric-grid">'+metric('326','服务商入驻')+metric('1840','需求工单')+metric('92%','匹配成功率')+'</div>';}},
 shicheng:{name:'适老商城',sub:'适老化产品与服务商城',html:function(){return '<div class="desc-banner">面向老年人及其家庭提供适老化产品与服务的在线商城，涵盖辅具、改造、健康用品与上门服务等。</div><h3>热销品类（示例）</h3><div class="tag-row"><span class="tag">智能手环</span><span class="tag">护理床垫</span><span class="tag">助行辅具</span><span class="tag">防滑改造</span><span class="tag">智能呼叫</span><span class="tag">健康监测</span></div><h3>运营数据（示例）</h3><div class="metric-grid">'+metric('1560','上架商品')+metric('23800','累计订单')+metric('98.6%','好评率')+'</div>';}},
 shegong:{name:'社会工作者',sub:'社工人才队伍与网格服务',html:function(){return '<div class="desc-banner">展示全县社会工作专业人才队伍、持证情况、网格分布与服务开展成效，推动专业化养老服务队伍建设。</div><h3>人才结构（示例）</h3><div class="metric-grid">'+metric('856','社工人员')+metric('312','持证社工')+metric('48','志愿服务队')+'</div><h3>服务网络</h3><ul><li>构建“县—乡镇—村（社区）”三级社工服务网络。</li><li>定期开展走访、评估、帮扶与政策宣传等专业服务。</li></ul>';}},
@@ -308,7 +310,65 @@ yanglaocg:{name:'养老成果',sub:'养老服务体系建设成效',html:functio
 function row(t,d,s){return '<div class="item"><span class="dot"></span><div class="tx"><b>'+t+'</b><br><span>'+d+'</span></div><span class="st">'+s+'</span></div>';}
 function metric(n,l){return '<div class="metric"><div class="n">'+n+'</div><div class="l">'+l+'</div></div>';}
 var overlay=document.getElementById('overlay');var modal=document.getElementById('modal');var mTitle=document.getElementById('m-title');var mSub=document.getElementById('m-sub');var mBody=document.getElementById('m-body');var mIco=document.getElementById('m-ico');var mClose=document.getElementById('m-close');
-function openPanel(key){var d=DATA[key];if(!d)return;mTitle.textContent=d.name;mSub.textContent=d.sub;mIco.innerHTML=ICONS[key];mBody.innerHTML=d.html();overlay.classList.add('open');document.body.style.overflow='hidden';if(key==='tongji'){setTimeout(function(){var bar=document.getElementById('chart-bar');var pie=document.getElementById('chart-pie');if(bar&&window.echarts){echarts.init(bar).setOption({backgroundColor:'transparent',grid:{left:40,right:14,top:30,bottom:26},tooltip:{trigger:'axis'},textStyle:{color:'#c3dcf5'},xAxis:{type:'category',data:['机构','床位','社工','补贴(万)','服务(万)'],axisLine:{lineStyle:{color:'#33567f'}}},yAxis:{type:'value',splitLine:{lineStyle:{color:'rgba(64,160,255,.12)'}},axisLine:{lineStyle:{color:'#33567f'}}},series:[{type:'bar',data:[59,4200,856,3600,128],barWidth:'46%',itemStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'#39c8ff'},{offset:1,color:'#0a5ec2'}]),borderRadius:[4,4,0,0]}}]});}if(pie&&window.echarts){echarts.init(pie).setOption({backgroundColor:'transparent',tooltip:{trigger:'item'},legend:{bottom:0,textStyle:{color:'#c3dcf5'}},color:['#39c8ff','#ffd76a','#2fa9ff','#9b7bff'],series:[{type:'pie',radius:['42%','68%'],center:['50%','42%'],label:{color:'#d5ecff',fontSize:12},data:[{value:38,name:'公办机构'},{value:21,name:'民办机构'},{value:13,name:'日照中心'},{value:9,name:'其他'}]}]});}},50);}}
+function openPanel(key){var d=DATA[key];if(!d)return;mTitle.textContent=d.name;mSub.textContent=d.sub;mIco.innerHTML=ICONS[key];mBody.innerHTML=d.html();overlay.classList.add('open');document.body.style.overflow='hidden';
+  if (key === 'tongji') {
+    setTimeout(function () {
+      var bar = document.getElementById('chart-bar');
+    var pie=document.getElementById('chart-pie');
+      if (bar && window.echarts) {
+        echarts.init(bar).setOption(
+          { backgroundColor: 'transparent', grid: { left: 40, right: 14, top: 30, bottom: 26 }, tooltip: { trigger: 'axis' }, textStyle: { color: '#c3dcf5' }, xAxis: { type: 'category', data: ['机构', '床位', '社工', '补贴(万)', '服务(万)'], axisLine: { lineStyle: { color: '#33567f' } } }, yAxis: { type: 'value', splitLine: { lineStyle: { color: 'rgba(64,160,255,.12)' } }, axisLine: { lineStyle: { color: '#33567f' } } }, series: [{ type: 'bar', data: [59, 4200, 856, 3600, 128], barWidth: '46%', itemStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: '#39c8ff' }, { offset: 1, color: '#0a5ec2' }]), borderRadius: [4, 4, 0, 0] } }] });
+      } if (pie && window.echarts) { echarts.init(pie).setOption({ backgroundColor: 'transparent', tooltip: { trigger: 'item' }, legend: { bottom: 0, textStyle: { color: '#c3dcf5' } }, color: ['#39c8ff', '#ffd76a', '#2fa9ff', '#9b7bff'], series: [{ type: 'pie', radius: ['42%', '68%'], center: ['50%', '42%'], label: { color: '#d5ecff', fontSize: 12 }, data: [{ value: 38, name: '公办机构' }, { value: 21, name: '民办机构' }, { value: 13, name: '日照中心' }, { value: 9, name: '其他' }] }] }); }
+    }, 50);
+    } else if (key === 'renkou') {
+    setTimeout(function () {
+        let mapOption = {};
+      const init = (name, mapJson) => {
+        echarts.registerMap(name, mapJson);//注册地图
+        mapOption = {
+          tooltip: {
+        trigger: 'item',
+        formatter: '{b}<br/>{c} (万人)'
+      },
+      visualMap: {
+        min: 2.6,
+        max: 10,
+        text: ['High', 'Low'],
+        realtime: false,
+        calculable: true,
+        inRange: {
+          color: ['lightskyblue', 'yellow', 'orangered']
+        }
+      },
+          series: [{
+          name: 'guangyuan',
+          type: 'map',
+          map: 'guangyuan',
+          label: {
+            show: true
+          },
+          data: [
+            { name: '苍溪县', value: 2.6 },
+            { name: '青川县', value: 4.3 },
+            { name: '朝天区', value: 4.2 },
+            { name: '旺苍县', value: 3.1 },
+            { name: '剑阁县', value: 2.5 },
+            { name: '利州区', value: 5.0 },
+            { name: '昭化区', value: 3.0 }
+          ] 
+         },
+          ]
+        };
+      }
+          init('guangyuan', guangyuanData);
+        var mapDom = document.getElementById('renkou-map');
+        if (mapDom && window.echarts) {
+          echarts.init(mapDom).setOption(mapOption);
+        }
+      }, 50);
+      
+  }
+}
 function closePanel(){overlay.classList.remove('open');document.body.style.overflow='';}
 document.querySelectorAll('.nav-card').forEach(function(card){card.addEventListener('click',function(){openPanel(card.getAttribute('data-panel'));});});
 mClose.addEventListener('click',closePanel);
